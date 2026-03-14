@@ -3,9 +3,24 @@ import os
 
 app = Flask(__name__)
 
+def strategic_score(market, finance, positioning, execution, growth):
+    score = (
+        market * 0.2 +
+        finance * 0.2 +
+        positioning * 0.2 +
+        execution * 0.2 +
+        growth * 0.2
+    )
+    return round(score, 2)
+
+
 @app.route("/")
 def home():
-    return {"name": "Decisio AI", "status": "running"}
+    return {
+        "name": "Decisio AI",
+        "status": "running"
+    }
+
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -18,7 +33,13 @@ def analyze():
     execution = data.get("execution", 0)
     growth = data.get("growth", 0)
 
-    score = (market + finance + positioning + execution + growth) / 5
+    score = strategic_score(
+        market,
+        finance,
+        positioning,
+        execution,
+        growth
+    )
 
     return jsonify({
         "market": market,
