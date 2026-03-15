@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-import os
 
 app = Flask(__name__)
+
 
 def strategic_score(market, finance, positioning, execution, growth):
     score = (
@@ -16,10 +16,7 @@ def strategic_score(market, finance, positioning, execution, growth):
 
 @app.route("/")
 def home():
-    return {
-        "name": "Decisio AI",
-        "status": "running"
-    }
+    return {"status": "Decisio AI running"}
 
 
 @app.route("/analyze", methods=["POST"])
@@ -41,16 +38,17 @@ def analyze():
         growth
     )
 
-    return jsonify({
+    result = {
         "market": market,
         "finance": finance,
         "positioning": positioning,
         "execution": execution,
         "growth": growth,
         "strategic_score": score
-    })
+    }
+
+    return jsonify(result)
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=8080)
