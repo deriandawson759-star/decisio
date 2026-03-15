@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import os
 
 app = Flask(__name__)
@@ -20,7 +20,60 @@ def home():
 
 
 @app.route("/analyze", methods=["POST"])
-def analyze():
+def analyze():@app.route("/report", methods=["POST"])
+def report():
+
+    data = request.json
+
+    market = data.get("market", 0)
+    finance = data.get("finance", 0)
+    positioning = data.get("positioning", 0)
+    execution = data.get("execution", 0)
+    growth = data.get("growth", 0)
+
+    score = strategic_score(market, finance, positioning, execution, growth)
+
+    html = f"""
+    <html>
+    <head>
+        <title>Decisio Strategic Report</title>
+        <style>
+            body {{ font-family: Arial; margin:40px; }}
+            h1 {{ color:#2c3e50 }}
+            .score {{ font-size:28px; margin-top:20px }}
+        </style>
+    </head>
+    <body>
+
+        <h1>Decisio Strategic Report</h1>
+
+        <h2>Company Analysis</h2>
+
+        <ul>
+        <li>Market Strength: {market}</li>
+        <li>Financial Structure: {finance}</li>
+        <li>Strategic Positioning: {positioning}</li>
+        <li>Operational Execution: {execution}</li>
+        <li>Growth Potential: {growth}</li>
+        </ul>
+
+        <div class="score">
+        Strategic Score: {score}/10
+        </div>
+
+        <h2>Recommendations</h2>
+
+        <ul>
+        <li>Improve operational efficiency</li>
+        <li>Strengthen financial discipline</li>
+        <li>Leverage strategic positioning</li>
+        </ul>
+
+    </body>
+    </html>
+    """
+
+    return Response(html, mimetype="text/html")
 
     data = request.json
 
