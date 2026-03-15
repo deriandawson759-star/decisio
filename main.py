@@ -20,7 +20,37 @@ def home():
 
 
 @app.route("/analyze", methods=["POST"])
-def analyze():@app.route("/report", methods=["POST"])
+@app.route("/analyze", methods=["POST"])
+def analyze():
+
+    data = request.json
+
+    market = data.get("market", 0)
+    finance = data.get("finance", 0)
+    positioning = data.get("positioning", 0)
+    execution = data.get("execution", 0)
+    growth = data.get("growth", 0)
+
+    score = strategic_score(
+        market,
+        finance,
+        positioning,
+        execution,
+        growth
+    )
+
+    return jsonify({
+        "market": market,
+        "finance": finance,
+        "positioning": positioning,
+        "execution": execution,
+        "growth": growth,
+        "strategic_score": score
+    })
+
+
+@app.route("/report", methods=["POST"])
+def report():
 def report():
 
     data = request.json
